@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source $HOME/workspace/taro.default/_taro/taro.conf
+exec $(dirname $0)/run
