@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export PIGLIT_BUILD_DIR=$HOME/workspace/taro.default/build/piglit
+exec $(dirname $0)/run
