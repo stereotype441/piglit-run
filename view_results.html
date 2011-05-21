@@ -1,0 +1,24 @@
+<html>
+<head>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="view_results.js"></script>
+<style type="text/css">
+  .hidden {display:none}
+</style>
+</head>
+<body>
+  <form>
+    Results from run <select id="result_selector"></select>:<br>
+    Limit to regex <input type="text" id="limit_regex"></input>
+    <span color="red" id="bad_regex_text"></span>
+  </form>
+  <table>
+    <thead>
+      <tr>
+	<td>Result</td><td>Test name</td>
+      </tr>
+    </thead>
+    <tbody id="result_table_body"></tbody>
+  </table>
+</body>
+</html>
