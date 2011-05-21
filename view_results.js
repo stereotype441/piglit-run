@@ -139,7 +139,7 @@ function show_detail(result_set, result_name) {
     $("#detail_set").text(result_set);
     var result = all_data[result_set].tests[result_name];
     var html = Object.keys(result).sort().map(function(key) {
-	return "<tr><td>" + escape_html(key) + "</td><td><pre>" +
+	return "<tr><td>" + escape_html(key) + "</td><td>" +
 	    escape_detail(result[key]) + "</td></tr>";
     }).join("");
     $("#detail_table_body").html(html);
