@@ -8,8 +8,17 @@ function get_file(path) {
 }
 
 function decode(str) {
-    // TODO: unescape stuff.
-    return str;
+    return str.replace(/\\(x[0-9a-f][0-9a-f]|[tnr'\\])/g, function(s) {
+	switch (s.charAt(1)) {
+	case 'x': return String.fromCharCode(parseInt(s.slice(2), 16));
+	case 't': return '\t';
+	case 'n': return '\n';
+	case 'r': return '\r';
+	case "'": return "'";
+	case '\\': return '\\';
+	default: return '';
+	}
+    });
 }
 
 function piglit_parse(lines) {
@@ -92,7 +101,7 @@ function escape_html(str) {
 }
 
 function escape_attr(str) {
-    return escape_html(str).replace(/"/,"&quot;");
+    return escape_html(str).replace(/"/g,"&quot;");
 }
 
 function stable_sort(data, classifier) {
@@ -107,7 +116,46 @@ function stable_sort(data, classifier) {
     }).map(function(i) { return data[i]; });
 }
 
+function show_detail(result_set, result_name) {
+    function escape_detail(detail) {
+	switch (typeof detail) {
+	case "string":
+	    if (detail.slice(0,3) == "@@@")
+		return "<pre>" + escape_html(detail.slice(3)) + "</pre>";
+	    else
+		return escape_html(detail);
+	case "object":
+	    if (detail instanceof Array) {
+		return "<ul>" + detail.map(function(x) {
+		    return "<li>" + escape_html(x) + "</li>";
+		}).join("") + "</ul>";
+	    } else return escape_html(String(detail));
+	default:
+	    return escape_html(String(detail));
+	}
+    }
+
+    $("#detail_name").text(result_name);
+    $("#detail_set").text(result_set);
+    var result = all_data[result_set].tests[result_name];
+    var html = Object.keys(result).sort().map(function(key) {
+	return "<tr><td>" + escape_html(key) + "</td><td><pre>" +
+	    escape_detail(result[key]) + "</td></tr>";
+    }).join("");
+    $("#detail_table_body").html(html);
+    $("#detail_view").removeClass("hidden");
+    $("#top_div").css("height", "50%");
+    $("#detail_view").css("top", "50%");
+}
+
 function display_result() {
+    function make_link(key) {
+	return "<a href=\"javascript:show_detail(" +
+	    escape_attr(JSON.stringify(result_name) + ", " +
+			JSON.stringify(key)) +
+	    ")\">" + escape_html(key) + "</a>";
+    }
+
     var id_num = 1;
     result_id_map = {};
     var result_name = $("#result_selector").val();
@@ -123,7 +171,7 @@ function display_result() {
 	result_id_map[key] = result_id;
 	return "<tr id=\"" + escape_attr(result_id) + "\"><td>" +
 	    escape_html(String(result.result)) + "</td><td>" +
-	    escape_html(key) + "</td></tr>";
+	    make_link(key) + "</td></tr>";
     }).join("");
     $("#result_table_body").html(html);
     update_hiddenness();

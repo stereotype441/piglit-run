@@ -1,4 +1,4 @@
-<html>
+<html style="height:100%;overflow-x:hidden;overflow-y:hidden">
 <head>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript" src="view_results.js"></script>
@@ -6,19 +6,33 @@
   .hidden {display:none}
 </style>
 </head>
-<body>
-  <form>
-    Results from run <select id="result_selector"></select>:<br>
-    Limit to regex <input type="text" id="limit_regex"></input>
-    <span color="red" id="bad_regex_text"></span>
-  </form>
-  <table>
-    <thead>
-      <tr>
-	<td>Result</td><td>Test name</td>
-      </tr>
-    </thead>
-    <tbody id="result_table_body"></tbody>
-  </table>
+<body style="margin:0px;height:100%;overflow-x:hidden;overflow-y:hidden">
+  <div id="top_div" style="position:fixed;top:0px;height:100%;bottom:auto;width:100%;border:solid;border-width:0px 0px 1px 0px;overflow-x:auto;overflow-y:auto">
+    <form>
+      Results from run <select id="result_selector"></select>:<br>
+      Limit to regex <input type="text" id="limit_regex"></input>
+      <span color="red" id="bad_regex_text"></span>
+    </form>
+    <table>
+      <thead>
+	<tr>
+	  <th>Result</th><th>Test name</th>
+	</tr>
+      </thead>
+      <tbody id="result_table_body"></tbody>
+    </table>
+  </div>
+  <div id="detail_view" style="position:fixed;top:100%;bottom:0px;height:auto;width:100%;overflow-x:auto;overflow-y:auto" class="hidden">
+    <h2>
+      Detail for <span id="detail_name"></span>
+      (from <span id="detail_set"></span>)
+    </h2>
+    <table>
+      <thead>
+	<tr><th>Detail</th><th>Value</th></tr>
+      </thead>
+      <tbody id="detail_table_body"></tbody>
+    </table>
+  </div>
 </body>
 </html>
